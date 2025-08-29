@@ -39,7 +39,9 @@ class Arctis7PlusChatMix:
 
         # identify the arctis 7+ device
         try:
-            self.dev=usb.core.find(idVendor=0x1038, idProduct=0x220e)
+            # Support both Arctis 7P (0x220e) and Nova 7 WOW Edition (0x227a)
+            self.dev = usb.core.find(idVendor=0x1038, idProduct=0x220e) or \
+                        usb.core.find(idVendor=0x1038, idProduct=0x227a)
         except Exception as e:
             self.log.error("""Failed to identify the Arctis 7+ device.
             Please ensure it is connected.\n
