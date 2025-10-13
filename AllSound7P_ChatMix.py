@@ -50,7 +50,7 @@ class Arctis7PlusChatMix:
         except Exception as e:
             self.log.error("""Failed to identify the Arctis 7+ device.
             Please ensure it is connected.\n
-            Please note: This program only supports the '7+' model.""")
+            Please note: This program only supports the '7+' or the Nova 7 WoW Edition models.""")
             self.die_gracefully(trigger="Couldn't find arctis7 model")
 
         # select its interface and USB endpoint, and capture the endpoint address
