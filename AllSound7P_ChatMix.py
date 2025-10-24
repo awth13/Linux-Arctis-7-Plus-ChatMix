@@ -44,12 +44,14 @@ class Arctis7PlusChatMix:
 
         # identify the arctis 7+ device
         try:
-            self.dev=usb.core.find(idVendor=0x1038, idProduct=0x220e)
+            # Support both Arctis 7P (0x220e) and Nova 7 WOW Edition (0x227a)
+            self.dev = usb.core.find(idVendor=0x1038, idProduct=0x220e) or \
+                        usb.core.find(idVendor=0x1038, idProduct=0x227a)
         except Exception as e:
             self.log.error("""Failed to identify the Arctis 7+ device.
             Please ensure it is connected.\n
-            Please note: This program only supports the '7+' model.""")
-            self.die_gracefully(trigger)
+            Please note: This program only supports the '7+' or the Nova 7 WoW Edition models.""")
+            self.die_gracefully(trigger="Couldn't find arctis7 model")
 
         # select its interface and USB endpoint, and capture the endpoint address
         try:
@@ -153,6 +155,7 @@ class Arctis7PlusChatMix:
 
         #route the virtual sink's L&R channels to the default system output's LR
         try:
+            default_sink = self.system_default_sink
             self.log.info("Assigning VAC sink monitors output to default device...")
 
             os.system(f'pw-link "ChatMix_Game:monitor_FL" '
